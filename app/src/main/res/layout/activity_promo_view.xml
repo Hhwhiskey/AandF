@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view_details"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:layout_margin="32dp"
+        app:layout_scrollFlags="enterAlways">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/promo_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/black_translucent"
+                android:alpha=".5"
+                ></View>
+
+                <TextView
+                    android:id="@+id/promo_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:foregroundGravity="center"
+                    android:gravity="bottom|center_horizontal"
+                    android:textAlignment="center"
+                    android:textSize="18sp"
+                    android:textStyle="italic"
+                    android:visibility="visible"
+                    android:textColor="#FFFFFF"
+                    android:text="Description"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/promo_title"
+                    android:layout_margin="32dp"/>
+
+                <TextView
+                    android:id="@+id/promo_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Title"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="#FFFFFF"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="16dp"/>
+
+                <TextView
+                    android:id="@+id/promo_footer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center_vertical"
+                    android:text="New Text"
+                    android:textColor="#FFFFFF"
+                    android:layout_alignParentBottom="true"
+                    android:textSize="12sp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginLeft="16dp"
+                    android:layout_toLeftOf="@+id/fab_web_view"
+                    android:layout_toStartOf="@+id/fab_web_view"/>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_web_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:backgroundTint="@color/colorAccent"
+                app:elevation="8dp"
+                app:layout_anchor="@id/card_view_details"
+                app:layout_anchorGravity="bottom|right|end"
+                app:rippleColor="#ffffff"
+                android:src="@drawable/ic_action_name"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="16dp"/>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <!--app:layout_behavior="pl.michalz.hideonscrollexample.ScrollingFABBehavior"/>-->
+
+
+</RelativeLayout>

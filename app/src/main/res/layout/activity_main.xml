@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TableLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingTop="16dp"
+    android:orientation="horizontal"
+    android:stretchColumns="*">
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="INTRODUCING SUMMER 2016 \nNEW ARRIVALS"
+            android:id="@+id/textView2"
+            android:layout_column="0"
+            android:layout_span="2"
+            android:lines="2"
+            android:textSize="20sp"
+            android:textAlignment="center"/>
+    </TableRow>
+
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:id="@+id/title_image_1"
+            android:scaleType="centerCrop"
+            android:layout_marginTop="32dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_column="0"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="This is test 1"
+            android:id="@+id/title_1"
+            android:textSize="14sp"
+            android:gravity="center_vertical"
+            android:layout_margin="8dp"
+            android:layout_column="1"/>
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:id="@+id/title_image_2"
+            android:scaleType="centerCrop"
+            android:layout_margin="16dp"
+            android:layout_column="0"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="This is test 2"
+            android:id="@+id/title_2"
+            android:layout_margin="8dp"
+            android:textSize="14sp"
+            android:gravity="center_vertical"
+            android:layout_column="1"/>
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:text="EST. 1892 \n Abercrombie &amp; Fitch \n NEW YORK"
+            android:id="@+id/textView"
+
+            android:lines="3"
+            android:alpha=".5"
+            android:layout_span="2"
+            android:layout_marginTop="16dp"
+            android:gravity="center_horizontal"/>
+    </TableRow>
+
+
+</TableLayout>
+
+
+
