@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">AF</string>
+    <string name="network_connection_established">Network Connection Established!</string>
+    <string name="no_connection">Network connection has been lost. Please check your network settings.</string>
+    <string name="please_check_network_settings">Please check your network settings.</string>
+    <string name="action_settings">Settings</string>
 </resources>

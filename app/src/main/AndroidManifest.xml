@@ -3,6 +3,7 @@
           xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -10,18 +11,30 @@
         android:label="A &amp; F"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+
+        // Network detector receiver
+        <receiver android:name="com.khfire22.af.utils.NetworkStateChangeReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+        </receiver>
+
+
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            android:screenOrientation="portrait"
         </activity>
 
-        <activity android:name=".PromoView">
+        <activity android:name=".activities.PromoViewActivity"
+            android:screenOrientation="portrait">
         </activity>
 
-        <activity android:name=".WebViewActivity">
+        <activity android:name=".activities.WebViewActivity">
         </activity>
     </application>
 

@@ -1,9 +1,9 @@
-package com.khfire22.af;
+package com.khfire22.af.model;
 
 /**
  * Created by Kevin on 2/1/2016.
  */
-public class Promo {
+public class PromoItem {
     public String description;
     public String title;
     public String image;

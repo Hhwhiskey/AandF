@@ -1,16 +1,20 @@
 package com.khfire22.af;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.khfire22.af.activities.PromoViewActivity;
+import com.khfire22.af.model.PromoItem;
+import com.khfire22.af.utils.ConnectionDetector;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,82 +30,111 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    // URL to get promos
-    private static String jsonURL;
+    private static final String TAG = "MainActivity";
 
     // JSON node TAGS to be used
     private static String TAG_PROMOTIONS = "promotions";
     private static String TAG_PROMO_TITLE = "title";
     private static String TAG_PROMO_IMAGE = "image";
-    private static String TAG_VIEW_PROMO_IMAGE = "image";
-    private static String TAG_VIEW_PROMO_TITLE = "title";
-    private static String TAG_VIEW_DESCRIPTION = "description";
-    private static String TAG_VIEW_FOOTER = "footer";
-    private static String TAG_VIEW_BUTTON_TEXT = "title";
-    private static String TAG_VIEW_BUTTON_TARGET = "target";
-    private static final String TAG = "MainActivity";
+    private static String TAG_PROMO_FOOTER = "footer";
+    private static String TAG_PROMO_DESCRIPTION = "description";
+
     private static ImageView imageView1;
     private static ImageView imageView2;
     private static TextView title1;
     private static TextView title2;
-    private TableLayout layout1;
-    private TableLayout layout2;
+    private ConnectionDetector detector;
 
-//    ProgressDialog dialog;
-    private ArrayList<Promo> list;
-    private String clickedTitle;
-    private String clickedDescription;
-    private String clickedImageUrl;
-    private String clickedFooter;
+
+
+    //    ProgressDialog dialog;
+    private ArrayList<PromoItem> list;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        detector = new ConnectionDetector(this);
+
+        // Instantiate all views
+        // Show fallback pic if no network is detected
         imageView1 = (ImageView) findViewById(R.id.title_image_1);
+        Picasso.with(MainActivity.this)
+                .load(R.drawable.fillerpicture)
+                .centerCrop()
+                .resize(300, 300)
+                .into(imageView1);
+
         imageView2 = (ImageView) findViewById(R.id.title_image_2);
+        Picasso.with(MainActivity.this)
+                .load(R.drawable.fillerpicture)
+                .centerCrop()
+                .resize(300, 300)
+                .into(imageView2);
+
         title1 = (TextView) findViewById(R.id.title_1);
         title2 = (TextView) findViewById(R.id.title_2);
+
+
+        /*
+         * OCL for all views
+         * If no connection is detected, prevent clicks on any views and give toast to user
+         */
 
         imageView1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewPromoIntent(0);
+                if (!detector.isConnectedToInternet()) {
+                    Toast.makeText(MainActivity.this, R.string.please_check_network_settings, Toast.LENGTH_LONG).show();
+                } else {
+                    viewPromoIntent(0);
+                }
             }
         });
 
         title1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewPromoIntent(0);
+                if (!detector.isConnectedToInternet()) {
+                    Toast.makeText(MainActivity.this, R.string.please_check_network_settings, Toast.LENGTH_LONG).show();
+                } else {
+                    viewPromoIntent(0);
+                }
             }
         });
-
 
         imageView2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewPromoIntent(1);
+                if (!detector.isConnectedToInternet()) {
+                    Toast.makeText(MainActivity.this, R.string.please_check_network_settings, Toast.LENGTH_LONG).show();
+                } else {
+                    viewPromoIntent(1);
+                }
             }
         });
-
 
         title2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewPromoIntent(1);
-
+                if (!detector.isConnectedToInternet()) {
+                    Toast.makeText(MainActivity.this, R.string.please_check_network_settings, Toast.LENGTH_LONG).show();
+                } else {
+                    viewPromoIntent(1);
+                }
             }
         });
 
+
+        // Execute task that will point to JSON URL
         GetJsonPromo getJsonPromo = new GetJsonPromo();
         getJsonPromo.execute();
 
     }
 
-
-
+    // Intent extra for all relevant data
     public void viewPromoIntent(int i) {
 
         String clickedTitle = list.get(i).title;
@@ -110,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         String clickedFooter = list.get(i).footer;
         String position = String.valueOf(i);
 
-        final Intent promoIntent = new Intent(MainActivity.this, PromoView.class);
+        final Intent promoIntent = new Intent(MainActivity.this, PromoViewActivity.class);
         promoIntent.putExtra("promoTitle", clickedTitle);
         promoIntent.putExtra("promoDescription", clickedDescription);
         promoIntent.putExtra("promoImageUrl", clickedImageUrl);
@@ -120,27 +153,14 @@ public class MainActivity extends AppCompatActivity {
         startActivity(promoIntent);
     }
 
+    // Async to point to the promo URL
     public class GetJsonPromo extends AsyncTask<Void, Void, String> {
 
-        private String title;
-        private String imageUrl;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            // Show progress dialog
-//            dialog = new ProgressDialog(MainActivity.this);
-//            dialog.setMessage("Please wait...");
-//            dialog.show();
-        }
-
+        // Point to the URL in the background
         @Override
         protected String doInBackground(Void... params) {
-            // Point to the promo URL
-            jsonURL =  "http://www.abercrombie.com/anf/nativeapp/Feeds/promotions.json";
 
-
-            // Connect to the A&F Promo URL
+            // Connect to the A&F promo URL
             try {
                 URL jsonUrl = new URL("http://www.abercrombie.com/anf/nativeapp/Feeds/promotions.json");
                 HttpURLConnection conn = (HttpURLConnection) jsonUrl.openConnection();
@@ -170,15 +190,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         protected void onPostExecute(String result) {
-            super.onPostExecute(title);
-//            dialog.dismiss();
-
+            super.onPostExecute(result);
         }
     }
 
-
-
-    private ArrayList<Promo> parseResponse(String response) {
+    // Parse the String from the input steam
+    private ArrayList<PromoItem> parseResponse(String response) {
 
         list = new ArrayList<>();
 
@@ -186,71 +203,63 @@ public class MainActivity extends AppCompatActivity {
         try {
             JSONObject mainObject = new JSONObject(response);
 
-            JSONArray jsonArray = mainObject.getJSONArray("promotions");
+            JSONArray jsonArray = mainObject.getJSONArray(TAG_PROMOTIONS);
 
-
+            // Iterate through the jsonArray and create promo objects with the data
             for (int i = 0; i < jsonArray.length(); i++) {
-                final Promo promo = new Promo();
-                promo.description = jsonArray.getJSONObject(i).optString("description");
-                promo.title = jsonArray.getJSONObject(i).optString("title");
-                promo.image = jsonArray.getJSONObject(i).optString("image");
-                promo.footer = jsonArray.getJSONObject(i).optString("footer");
+                final PromoItem promoItem = new PromoItem();
+                promoItem.description = jsonArray.getJSONObject(i).optString(TAG_PROMO_DESCRIPTION);
+                promoItem.title = jsonArray.getJSONObject(i).optString(TAG_PROMO_TITLE);
+                promoItem.image = jsonArray.getJSONObject(i).optString(TAG_PROMO_IMAGE);
+                promoItem.footer = jsonArray.getJSONObject(i).optString(TAG_PROMO_FOOTER);
 
-
-
+                // Update the imageViews and textViews on the UI thread
                 final int finalI = i;
+
                 this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
 
                         if (finalI == 0) {
-                            title1.setText(promo.title);
-                            new ImageLoadTask(promo.image, imageView1).execute();
 
+                            title1.setText(promoItem.title);
 
+                            Picasso.with(MainActivity.this)
+                                    .load(promoItem.image)
+                                    .centerCrop()
+                                    .resize(300, 300)
+                                    .placeholder(R.drawable.fillerpicture)
+                                    .into(imageView1);
                         } else {
-                            title2.setText(promo.title);
-                            new ImageLoadTask(promo.image, imageView2).execute();
 
+                            title2.setText(promoItem.title);
+
+                            Picasso.with(MainActivity.this)
+                                    .load(promoItem.image)
+                                    .centerCrop()
+                                    .resize(300, 300)
+                                    .placeholder(R.drawable.fillerpicture)
+                                    .into(imageView2);
                         }
                     }
                 });
-//                  TODO buttons
-//                promo1.buttonTarget = jsonArray.getJSONObject(i).optJSONObject("button").optString("target");
-//                promo1.buttonTitle = jsonArray.getJSONObject(i).optJSONObject("button").optString("title");
 
-
-
-                list.add(promo);
+                list.add(promoItem);
                 Log.d("JSON", "list = " + list.size());
             }
         } catch (JSONException e) {
-            Log.d("JSON", "Error =  "+ e.toString());
+            Log.d("JSON", "Error =  " + e.toString());
             e.printStackTrace();
         }
 
         return list;
     }
 
-    public void getPromoDataOnClick() {
-
-    }
-
+    // Convert the the InputStream to a String
     public static String getStringFromInputStream(InputStream is) {
 
         BufferedReader br = null;
         StringBuilder sb = new StringBuilder();
-
-        //can use JSON as follows: (also in Parse Response method)
-        /*try {
-            JSONObject content = new JSONObject(br.readLine());
-			//define keys that you need values for
-            String promotion = content.getString("promotion");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
 
         String line;
         try {
@@ -275,38 +284,27 @@ public class MainActivity extends AppCompatActivity {
         return sb.toString();
     }
 
-    public class ImageLoadTask extends AsyncTask<Void, Void, Bitmap> {
-
-        private String url;
-        private ImageView imageView;
-
-        public ImageLoadTask(String url, ImageView imageView) {
-            this.url = url;
-            this.imageView = imageView;
-        }
-
-        @Override
-        protected Bitmap doInBackground(Void... params) {
-            try {
-                URL urlConnection = new URL(url);
-                HttpURLConnection connection = (HttpURLConnection) urlConnection
-                        .openConnection();
-                connection.setDoInput(true);
-                connection.connect();
-                InputStream input = connection.getInputStream();
-                Bitmap myBitmap = BitmapFactory.decodeStream(input);
-                return myBitmap;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap result) {
-            super.onPostExecute(result);
-            imageView.setImageBitmap(result);
-        }
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Execute task that will point to JSON URL
+        GetJsonPromo getJsonPromo = new GetJsonPromo();
+        getJsonPromo.execute();
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 }
