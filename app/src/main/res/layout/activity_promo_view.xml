@@ -84,13 +84,11 @@
                 app:backgroundTint="@color/colorAccent"
                 app:elevation="8dp"
                 app:layout_anchor="@id/card_view_details"
-                app:layout_anchorGravity="bottom|right|end"
                 app:rippleColor="#ffffff"
                 android:src="@drawable/ic_action_name"
+                android:layout_margin="@dimen/action_button_margin"
                 android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_margin="16dp"/>
+                android:layout_alignParentRight="true"/>
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 

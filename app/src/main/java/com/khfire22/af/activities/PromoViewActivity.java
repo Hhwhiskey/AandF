@@ -20,6 +20,7 @@ public class PromoViewActivity extends AppCompatActivity {
     private String promoTitleString;
     private String promoDescriptionString;
     private String promoFooterString;
+
     private ImageView promoImage;
     private TextView promoTitle;
     private TextView promoDescription;
@@ -84,5 +85,7 @@ public class PromoViewActivity extends AppCompatActivity {
         });
     }
 
-
+    public ImageView getPromoImage() {
+        return promoImage;
+    }
 }

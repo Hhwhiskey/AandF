@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
     private static String TAG_PROMO_IMAGE = "image";
     private static String TAG_PROMO_FOOTER = "footer";
     private static String TAG_PROMO_DESCRIPTION = "description";
-
     private static ImageView imageView1;
     private static ImageView imageView2;
     private static TextView title1;
@@ -194,6 +193,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+
     // Parse the String from the input steam
     private ArrayList<PromoItem> parseResponse(String response) {
 
@@ -212,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
                 promoItem.title = jsonArray.getJSONObject(i).optString(TAG_PROMO_TITLE);
                 promoItem.image = jsonArray.getJSONObject(i).optString(TAG_PROMO_IMAGE);
                 promoItem.footer = jsonArray.getJSONObject(i).optString(TAG_PROMO_FOOTER);
+
 
                 // Update the imageViews and textViews on the UI thread
                 final int finalI = i;
@@ -305,6 +307,28 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    // Getters used to test the JSON retrieval
+    public static String getTagPromoImage() {
+        return TAG_PROMO_IMAGE;
+    }
+
+    public static String getTagPromotions() {
+        return TAG_PROMOTIONS;
+    }
+
+    public static String getTagPromoTitle() {
+        return TAG_PROMO_TITLE;
+    }
+
+    public static String getTagPromoFooter() {
+        return TAG_PROMO_FOOTER;
+    }
+
+    public static String getTagPromoDescription() {
+        return TAG_PROMO_DESCRIPTION;
     }
 
 }

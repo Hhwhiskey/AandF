@@ -23,7 +23,7 @@
             android:layout_span="2"
             android:lines="2"
             android:textSize="20sp"
-            android:textAlignment="center"/>
+            android:gravity="center_horizontal"/>
     </TableRow>
 
 
@@ -89,7 +89,7 @@
             android:lines="3"
             android:alpha=".5"
             android:layout_span="2"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:gravity="center_horizontal"/>
     </TableRow>
 
